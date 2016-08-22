@@ -2,7 +2,10 @@ require 'oystercard'
 
 describe Oystercard do
   subject(:oystercard) {described_class.new}
-  let(:station) { double :station }
+  let(:entry_station) { double :station }
+  let(:exit_station) { double :station }
+  let(:journey) {{entry_station: entry_station, exit_station: exit_station}}
+
 
   describe '#initialize' do
     it 'instantiates with a balance of 0' do
@@ -36,6 +39,10 @@ describe Oystercard do
       expect(oystercard.fare).to eq described_class::MINIMUM_FARE
     end
 
+    it 'has an empty list of journeys by default' do
+      expect(oystercard.journeys).to be_empty
+    end
+
   end
 
   describe '#top_up' do
@@ -61,45 +68,50 @@ describe Oystercard do
 
     it 'will be aware of journey status' do
     oystercard.top_up(1)
-    oystercard.touch_in(station)
+    oystercard.touch_in(entry_station)
     expect(oystercard).to be_in_journey
     end
 
     it 'will not touch in if insufficient funds' do
       msg = 'Insufficient funds'
-      expect { oystercard.touch_in(station) }.to raise_error msg
+      expect { oystercard.touch_in(entry_station) }.to raise_error msg
     end
 
     it 'will remember the entry station after touch in' do
       oystercard.top_up(4)
-      oystercard.touch_in(station)
-      expect(oystercard.entry_station).to eq station
+      oystercard.touch_in(entry_station)
+      expect(oystercard.entry_station).to eq entry_station
     end
 
-    context 'when in journey'
-    it 'does not allow touch in'
 
   describe '#touch_out' do
 
     it 'will be aware of journey status' do
     oystercard.top_up(1)
-    oystercard.touch_in(station)
-    oystercard.touch_out
+    oystercard.touch_in(entry_station)
+    oystercard.touch_out(exit_station)
     expect(oystercard).not_to be_in_journey
     end
 
     it 'will deduct fare amount from card balance' do
       oystercard.top_up(5)
-      oystercard.touch_in(station)
-      oystercard.touch_out
+      oystercard.touch_in(entry_station)
+      oystercard.touch_out(exit_station)
       expect(oystercard.balance).to eq 4
     end
 
     it 'will forget the entry station after touch out' do
       oystercard.top_up(4)
-      oystercard.touch_in(station)
-      oystercard.touch_out
+      oystercard.touch_in(entry_station)
+      oystercard.touch_out(exit_station)
       expect(oystercard.entry_station).to eq nil
+    end
+
+    it 'stores a journey' do
+      oystercard.top_up(5)
+      oystercard.touch_in(entry_station)
+      oystercard.touch_out(exit_station)
+      expect(oystercard.journeys).to include journey
     end
 
     context 'when not in journey'

@@ -1,6 +1,6 @@
 class Oystercard
 
-  attr_reader :balance, :limit, :fare, :entry_station
+  attr_reader :balance, :limit, :fare, :entry_station, :journeys
 
   DEFAULT_LIMIT = 90
   DEFAULT_BALANCE = 0
@@ -11,6 +11,7 @@ class Oystercard
     @balance = balance
     @fare = MINIMUM_FARE
     @entry_station = nil
+    @journeys = []
     fail 'Balance cannot be larger than limit' if balance > limit
   end
 
@@ -25,8 +26,9 @@ class Oystercard
     @entry_station = station
   end
 
-  def touch_out
+  def touch_out(station)
     deduct(fare)
+    record_journey(station)
     @entry_station = nil
   end
 
@@ -48,6 +50,10 @@ class Oystercard
     fail 'Insufficient funds' if amount > balance
     @balance -= amount
     balance_confirmation
+  end
+
+  def record_journey(station)
+    @journeys << {entry_station: @entry_station, exit_station: station}
   end
 
 end
