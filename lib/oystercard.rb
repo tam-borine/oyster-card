@@ -8,6 +8,7 @@ class Oystercard
   def initialize(limit = DEFAULT_LIMIT, balance = DEFAULT_BALANCE)
     @limit = limit
     @balance = balance
+    @in_journey = false
     fail 'Balance cannot be larger than limit' if balance > limit
   end
 
@@ -21,6 +22,18 @@ class Oystercard
     fail 'Insufficient funds' if amount > balance
     @balance -= amount
     balance_confirmation
+  end
+
+  def touch_in
+    @in_journey = true
+  end
+
+  def touch_out
+    @in_journey = false
+  end
+
+  def in_journey?
+    @in_journey
   end
 
   private

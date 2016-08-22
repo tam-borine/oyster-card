@@ -27,6 +27,10 @@ describe Oystercard do
       expect {Oystercard.new 50, 100}.to raise_error msg
     end
 
+    it 'is initially not in a journey' do
+      expect(oystercard).not_to be_in_journey
+    end
+
   end
 
   describe '#top_up' do
@@ -61,4 +65,28 @@ describe Oystercard do
     end
   end
 
+  describe '#touch_in' do
+
+    it 'will be aware of journey status' do
+    oystercard.touch_in
+    expect(oystercard).to be_in_journey
+    end
+
+    context 'when in journey'
+    it 'does not allow touch in'
+
+  describe '#touch_out' do
+
+    it 'will be aware of journey status' do
+    oystercard.touch_in
+    oystercard.touch_out
+    expect(oystercard).not_to be_in_journey
+    end
+
+    context 'when not in journey'
+    it 'does not allow touch out'
+
+  end
+
+  end
 end
