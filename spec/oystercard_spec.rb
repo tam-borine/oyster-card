@@ -20,7 +20,16 @@ describe Oystercard do
    it "deducts the specified amount from balance" do
      money = 88
      expect{subject.deduct(money)}.to change{subject.balance}.by(-money)
+   end
 
+   it "changes the in transit variable to true" do
+     subject.touch_in
+     expect(subject).to be_in_journey
+   end
+
+   it "changes the in transit variable to false" do
+     subject.touch_out
+     expect(subject).not_to be_in_journey
    end
 
 end
