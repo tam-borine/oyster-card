@@ -31,6 +31,10 @@ describe Oystercard do
       expect(oystercard).not_to be_in_journey
     end
 
+    it 'has a minimum fare' do
+      expect(oystercard.fare).to eq described_class::MINIMUM_FARE
+    end
+
   end
 
   describe '#top_up' do
@@ -68,8 +72,14 @@ describe Oystercard do
   describe '#touch_in' do
 
     it 'will be aware of journey status' do
+    oystercard.top_up(1)
     oystercard.touch_in
     expect(oystercard).to be_in_journey
+    end
+
+    it 'will not touch in if insufficient funds' do
+      msg = 'Insufficient funds'
+      expect { oystercard.touch_in }.to raise_error msg
     end
 
     context 'when in journey'
@@ -78,6 +88,7 @@ describe Oystercard do
   describe '#touch_out' do
 
     it 'will be aware of journey status' do
+    oystercard.top_up(1)
     oystercard.touch_in
     oystercard.touch_out
     expect(oystercard).not_to be_in_journey
@@ -85,8 +96,6 @@ describe Oystercard do
 
     context 'when not in journey'
     it 'does not allow touch out'
-
-  end
-
+    end
   end
 end
