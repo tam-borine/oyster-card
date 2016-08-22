@@ -2,6 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
   subject(:oystercard) {described_class.new}
+  let(:station) { double :station }
 
   describe '#initialize' do
     it 'instantiates with a balance of 0' do
@@ -60,13 +61,19 @@ describe Oystercard do
 
     it 'will be aware of journey status' do
     oystercard.top_up(1)
-    oystercard.touch_in
+    oystercard.touch_in(station)
     expect(oystercard).to be_in_journey
     end
 
     it 'will not touch in if insufficient funds' do
       msg = 'Insufficient funds'
-      expect { oystercard.touch_in }.to raise_error msg
+      expect { oystercard.touch_in(station) }.to raise_error msg
+    end
+
+    it 'will remember the entry station after touch in' do
+      oystercard.top_up(4)
+      oystercard.touch_in(station)
+      expect(oystercard.entry_station).to eq station
     end
 
     context 'when in journey'
@@ -76,16 +83,23 @@ describe Oystercard do
 
     it 'will be aware of journey status' do
     oystercard.top_up(1)
-    oystercard.touch_in
+    oystercard.touch_in(station)
     oystercard.touch_out
     expect(oystercard).not_to be_in_journey
     end
 
     it 'will deduct fare amount from card balance' do
       oystercard.top_up(5)
-      oystercard.touch_in
+      oystercard.touch_in(station)
       oystercard.touch_out
       expect(oystercard.balance).to eq 4
+    end
+
+    it 'will forget the entry station after touch out' do
+      oystercard.top_up(4)
+      oystercard.touch_in(station)
+      oystercard.touch_out
+      expect(oystercard.entry_station).to eq nil
     end
 
     context 'when not in journey'
