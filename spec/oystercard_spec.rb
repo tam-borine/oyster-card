@@ -2,7 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
 
-# let(balance){30}
+#let(:balance){ balance = 30}
 
   it 'should initialize with a balance' do
     expect(subject.balance).to eq 0
@@ -37,6 +37,16 @@ describe Oystercard do
      subject.top_up(30)
      subject.touch_in
      expect{subject.touch_out}.to change{subject.balance}.by(-Oystercard::MIN)
+   end
+
+   it "remembers the entry station after touch in" do
+     subject.top_up(30)
+     subject.touch_in("hammersmith")
+     expect(subject.in_journey?).to eq "hammersmith"
+   end
+
+   it "remembers the entry station after touch in" do
+     expect(subject.in_journey?).to eq nil
    end
 
 end
