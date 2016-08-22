@@ -47,4 +47,18 @@ describe Oystercard do
       expect {oystercard.top_up(1)}.to raise_error msg
     end
   end
+
+  describe '#deduct' do
+    it 'will reduce the balance by a specified amount' do
+      oystercard.top_up(50)
+      oystercard.deduct(5)
+      expect(oystercard.balance).to eq 45
+    end
+
+    it 'will raise an error when there is insufficient balance' do
+      msg = "Insufficient funds"
+      expect {oystercard.deduct(5)}.to raise_error msg
+    end
+  end
+
 end

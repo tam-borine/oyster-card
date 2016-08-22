@@ -12,20 +12,25 @@ class Oystercard
   end
 
   def top_up(amount)
-    fail 'Balance limit reached' if full? || amount > 90
+    fail 'Balance limit reached' if full? || amount > limit
     @balance += amount
-    top_up_confirmation
+    balance_confirmation
+  end
+
+  def deduct(amount)
+    fail 'Insufficient funds' if amount > balance
+    @balance -= amount
+    balance_confirmation
   end
 
   private
 
   def full?
-    balance >= 90
+    balance >= limit
   end
 
-  def top_up_confirmation
+  def balance_confirmation
     "Your new balance is #{balance}"
   end
-
 
 end
