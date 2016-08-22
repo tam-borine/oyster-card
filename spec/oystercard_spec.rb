@@ -2,7 +2,7 @@ require 'oystercard'
 
 describe Oystercard do
 
-
+# let(balance){30}
 
   it 'should initialize with a balance' do
     expect(subject.balance).to eq 0
@@ -23,6 +23,7 @@ describe Oystercard do
    end
 
    it "changes the in transit variable to true" do
+     subject.top_up(30)
      subject.touch_in
      expect(subject).to be_in_journey
    end
@@ -30,6 +31,11 @@ describe Oystercard do
    it "changes the in transit variable to false" do
      subject.touch_out
      expect(subject).not_to be_in_journey
+   end
+
+   it "requires a minimum balance of 1 before touch in " do
+     allow(subject).to receive(:balance) {0}
+     expect{subject.touch_in}.to raise_error "not enough money, please top up"
    end
 
 end
