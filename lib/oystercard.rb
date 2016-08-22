@@ -20,18 +20,13 @@ class Oystercard
     balance_confirmation
   end
 
-  def deduct(amount)
-    fail 'Insufficient funds' if amount > balance
-    @balance -= amount
-    balance_confirmation
-  end
-
   def touch_in
     fail 'Insufficient funds' if balance < fare
     @in_journey = true
   end
 
   def touch_out
+    deduct(fare)
     @in_journey = false
   end
 
@@ -47,6 +42,12 @@ class Oystercard
 
   def balance_confirmation
     "Your new balance is #{balance}"
+  end
+
+  def deduct(amount)
+    fail 'Insufficient funds' if amount > balance
+    @balance -= amount
+    balance_confirmation
   end
 
 end

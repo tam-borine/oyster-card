@@ -56,19 +56,6 @@ describe Oystercard do
     end
   end
 
-  describe '#deduct' do
-    it 'will reduce the balance by a specified amount' do
-      oystercard.top_up(50)
-      oystercard.deduct(5)
-      expect(oystercard.balance).to eq 45
-    end
-
-    it 'will raise an error when there is insufficient balance' do
-      msg = "Insufficient funds"
-      expect {oystercard.deduct(5)}.to raise_error msg
-    end
-  end
-
   describe '#touch_in' do
 
     it 'will be aware of journey status' do
@@ -92,6 +79,13 @@ describe Oystercard do
     oystercard.touch_in
     oystercard.touch_out
     expect(oystercard).not_to be_in_journey
+    end
+
+    it 'will deduct fare amount from card balance' do
+      oystercard.top_up(5)
+      oystercard.touch_in
+      oystercard.touch_out
+      expect(oystercard.balance).to eq 4
     end
 
     context 'when not in journey'
