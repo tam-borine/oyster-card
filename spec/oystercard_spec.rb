@@ -30,7 +30,7 @@ describe Oystercard do
 
    it "requires a minimum balance of 1 before touch in " do
      allow(subject).to receive(:balance) {0}
-     expect{subject.touch_in}.to raise_error "not enough money, please top up"
+     expect{subject.touch_in}.to raise_error "Not enough money, please top up"
    end
 
    it "should reduce the balance by the minimum fare" do
@@ -39,14 +39,21 @@ describe Oystercard do
      expect{subject.touch_out}.to change{subject.balance}.by(-Oystercard::MIN)
    end
 
-   it "remembers the entry station after touch in" do
+   xit "remembers the entry station after touch in" do
      subject.top_up(30)
-     subject.touch_in("hammersmith")
-     expect(subject.in_journey?).to eq "hammersmith"
+     subject.touch_in
+     expect(subject.in_journey?).to eq true
    end
 
-   it "remembers the entry station after touch in" do
-     expect(subject.in_journey?).to eq nil
+   xit "remembers the entry station after touch in" do
+     expect(subject.in_journey?).to eq false
+   end
+
+   it "should show the latest journey" do
+     subject.top_up(30)
+     subject.touch_in("aldgate")
+     subject.touch_out("euston")
+     expect(subject.journeys).to eq [subject.journey]
    end
 
 end
