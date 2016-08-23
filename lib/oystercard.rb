@@ -1,3 +1,5 @@
+require 'journey'
+
 class Oystercard
 
   attr_reader :balance, :limit, :fare, :entry_station, :journeys
@@ -39,7 +41,7 @@ class Oystercard
   private
 
   def full?
-    balance >= limit
+    @balance >= limit
   end
 
   def balance_confirmation
