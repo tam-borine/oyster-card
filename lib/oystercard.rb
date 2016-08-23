@@ -1,4 +1,4 @@
-require 'journey'
+require_relative 'journey'
 
 class Oystercard
 
@@ -12,6 +12,7 @@ class Oystercard
     @limit = limit
     @balance = balance
     @fare = MINIMUM_FARE
+    @entry = nil
     @entry_station = nil
     @journeys = []
     fail 'Balance cannot be larger than limit' if balance > limit
@@ -25,7 +26,8 @@ class Oystercard
 
   def touch_in(station)
     fail 'Insufficient funds' if balance < fare
-    @entry_station = station
+    var = Journey.new
+    var.journey[:entry] = var.start(station)
   end
 
   def touch_out(station)
