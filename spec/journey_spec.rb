@@ -2,55 +2,37 @@ require 'journey'
 
 describe Journey do
 
-  subject {described_class.new("bank")}
-  let(:oystercard) {double(:oystercard, :top_up => 4)}
+  subject {described_class.new("station")}
+
 
   it 'initializes with a start' do
     expect(Journey.new('start').journey[:entry]).to eq 'start'
   end
 
+  it 'returns true if journey is complete' do
+    subject.complete("station")
+    expect(subject.completed).to be true
+  end
 
-      xit 'will deduct fare amount from card balance' do
-        oystercard.top_up(5)
-        oystercard.touch_in(entry_station)
-        oystercard.touch_out(exit_station)
-        expect(oystercard.balance).to eq 4
-      end
+  it 'returns false if journey is incomplete' do
+    expect(subject.completed).to be false
+  end
 
       xit 'will forget journey after touch out' do
-        oystercard.top_up(4)
-        oystercard.touch_in(entry_station)
-        oystercard.touch_out(exit_station)
         expect(oystercard.entry_station).to eq nil
       end
 
-      xit 'stores a journey' do
-        oystercard.top_up(5)
-        oystercard.touch_in(entry_station)
-        oystercard.touch_out(exit_station)
-        expect(oystercard.journeys).to include journey
+      it 'stores a journey' do
+        subject.complete("station")
+        expect(subject.journeys).to eq [{entry: "station", exit: "station"}]
       end
 
   xit 'is initially not in a journey' do
     expect(oystercard).not_to be_in_journey
   end
 
-      xit 'will be aware of journey status' do
-      oystercard.top_up(1)
-      oystercard.touch_in(entry_station)
-      expect(oystercard).to be_in_journey
-      end
-
-          xit 'will be aware of not journey status' do
-          oystercard.top_up(1)
-          oystercard.touch_in(entry_station)
-          oystercard.touch_out(exit_station)
-          expect(oystercard).not_to be_in_journey
-          end
-
-
-      it 'will remember the entry station after touch in' do
-        expect(subject.journey[:entry]).to eq "bank"
+      it 'will remember the entry station' do
+        expect(subject.journey[:entry]).to eq "station"
       end
 
 end

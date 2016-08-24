@@ -11,6 +11,7 @@ class Oystercard
   def initialize(limit = DEFAULT_LIMIT, balance = DEFAULT_BALANCE)
     @limit = limit
     @balance = balance
+    @current_journey = nil
     @fare = MINIMUM_FARE
     fail 'Balance cannot be larger than limit' if balance > limit
   end
@@ -23,13 +24,13 @@ class Oystercard
 
   def touch_in(station)
     fail 'Insufficient funds' if balance < fare
-    Journey.new(station)
+    @current_journey = Journey.new(station)
     station
   end
 
   def touch_out(station)
     deduct(fare)
-    record_journey(station)
+    @current_journey.complete(station)
   end
 
   private
