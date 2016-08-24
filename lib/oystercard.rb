@@ -12,9 +12,6 @@ class Oystercard
     @limit = limit
     @balance = balance
     @fare = MINIMUM_FARE
-    @entry = nil
-    @entry_station = nil
-    @journeys = []
     fail 'Balance cannot be larger than limit' if balance > limit
   end
 
@@ -26,24 +23,21 @@ class Oystercard
 
   def touch_in(station)
     fail 'Insufficient funds' if balance < fare
-    var = Journey.new
-    var.journey[:entry] = var.start(station)
+    Journey.new(station)
+    station
   end
 
   def touch_out(station)
     deduct(fare)
     record_journey(station)
-    @entry_station = nil
-  end
-
-  def in_journey?
-    @entry_station != nil
   end
 
   private
 
+  attr_reader :balance_confirmation
+
   def full?
-    @balance >= limit
+    balance >= limit
   end
 
   def balance_confirmation
@@ -54,10 +48,6 @@ class Oystercard
     fail 'Insufficient funds' if amount > balance
     @balance -= amount
     balance_confirmation
-  end
-
-  def record_journey(station)
-    @journeys << {entry_station: @entry_station, exit_station: station}
   end
 
 end

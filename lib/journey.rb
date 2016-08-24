@@ -4,10 +4,9 @@ class Journey
 
   attr_accessor :start, :journey
 
-  def initialize
-    @start = "start_station"
+  def initialize(start)
     @journeys = []
-    @journey = {entry: 'startssss' , exit: 'end'}
+    @journey = {entry: start , exit: 'end'}
   end
 
 end
