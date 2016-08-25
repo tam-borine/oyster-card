@@ -71,7 +71,10 @@ describe Oystercard do
         expect(oystercard.touch_in("bank")).to eq "bank"
       end
 
-      it "instantiates journey object with entry station upon topup"
+      it "updates the current journey attribute when touch in" do
+        oystercard.touch_in("station")
+        expect(oystercard.current_journey).to_not eq nil
+      end
 
       context 'when not in journey'
       it 'does not allow touch out'

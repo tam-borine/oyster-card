@@ -23,10 +23,6 @@ describe Journey do
     expect(subject.journey).to eq({entry: "startstation" , exit: "stationexit"})
   end
 
-  xit 'is initially not in a journey' do
-    expect(oystercard).not_to be_in_journey
-  end
-
   it 'will remember the entry station' do
     expect(subject.journey[:entry]).to eq "startstation"
   end
