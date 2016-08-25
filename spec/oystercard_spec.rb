@@ -31,9 +31,6 @@ describe Oystercard do
       expect {Oystercard.new 50, 100}.to raise_error msg
     end
 
-    it 'has a minimum fare' do
-      expect(oystercard.fare).to eq described_class::MINIMUM_FARE
-    end
 
   end
 
