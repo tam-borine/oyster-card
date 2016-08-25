@@ -2,7 +2,7 @@ require 'journey'
 
 describe Journey do
 
-  subject {described_class.new("station")}
+  subject {described_class.new("startstation")}
 
 
   it 'initializes with a start' do
@@ -18,17 +18,17 @@ describe Journey do
     expect(subject.completed).to be false
   end
 
-      it 'stores a journey' do
-        subject.complete("station")
-        expect(subject.journeys).to eq [{entry: "station", exit: "station"}]
-      end
+  it 'stores a journey' do
+    subject.complete("stationexit")
+    expect(subject.journey).to eq({entry: "startstation" , exit: "stationexit"})
+  end
 
   xit 'is initially not in a journey' do
     expect(oystercard).not_to be_in_journey
   end
 
-      it 'will remember the entry station' do
-        expect(subject.journey[:entry]).to eq "station"
-      end
+  it 'will remember the entry station' do
+    expect(subject.journey[:entry]).to eq "startstation"
+  end
 
 end

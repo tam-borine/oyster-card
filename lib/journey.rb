@@ -2,7 +2,7 @@ require_relative 'oystercard'
 
 class Journey
 
-  attr_reader :journey, :completed, :journeys
+  attr_reader :journey, :completed
 
   def initialize(start )
     @journey = {entry: start , exit: nil}
