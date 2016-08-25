@@ -93,5 +93,6 @@ describe Oystercard do
       it 'will forget journey after touch out' do
         expect(oystercard.current_journey).to eq nil
       end
+
     end
 end

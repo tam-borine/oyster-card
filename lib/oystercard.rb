@@ -24,13 +24,13 @@ class Oystercard
 
   def touch_in(station)
     fail 'Insufficient funds' if balance < FareCalculator::MINIMUM_FARE   ##############
-    fail 'must touch out first' if @current_journey != nil
+    fail 'must touch out first' if started?
     @current_journey = Journey.new(station)
     station
   end
 
   def touch_out(station)
-    fail "must touch in first" if @current_journey == nil
+    fail "must touch in first" if !started?
     FareCalculator.new.deduct
     @current_journey.complete(station)
     @current_journey = nil
@@ -42,6 +42,10 @@ class Oystercard
 
   def full?
     balance >= limit
+  end
+
+  def started?
+    @current_journey != nil
   end
 
   def balance_confirmation
