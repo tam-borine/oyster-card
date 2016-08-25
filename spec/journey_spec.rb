@@ -18,10 +18,6 @@ describe Journey do
     expect(subject.completed).to be false
   end
 
-      xit 'will forget journey after touch out' do
-        expect(oystercard.entry_station).to eq nil
-      end
-
       it 'stores a journey' do
         subject.complete("station")
         expect(subject.journeys).to eq [{entry: "station", exit: "station"}]

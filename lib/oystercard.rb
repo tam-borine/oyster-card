@@ -3,6 +3,7 @@ require_relative 'journey'
 class Oystercard
 
   attr_reader :balance, :limit, :fare, :entry_station, :journeys
+  attr_accessor :current_journey  
 
   DEFAULT_LIMIT = 90
   DEFAULT_BALANCE = 0
@@ -31,6 +32,7 @@ class Oystercard
   def touch_out(station)
     deduct(fare)
     @current_journey.complete(station)
+    @current_journey = nil
   end
 
   private

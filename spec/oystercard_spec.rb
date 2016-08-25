@@ -76,4 +76,14 @@ describe Oystercard do
       context 'when not in journey'
       it 'does not allow touch out'
     end
+
+    describe '#touch_out' do
+      before do
+        oystercard.touch_in("station")
+        oystercard.touch_out("station")
+      end
+      it 'will forget journey after touch out' do
+        expect(oystercard.current_journey).to eq nil
+      end
+    end
 end

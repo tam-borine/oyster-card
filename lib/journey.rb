@@ -4,8 +4,7 @@ class Journey
 
   attr_reader :journey, :completed, :journeys
 
-  def initialize(start)
-    @journeys = []
+  def initialize(start )
     @journey = {entry: start , exit: nil}
     @completed = false
   end
@@ -13,7 +12,6 @@ class Journey
   def complete(station)
   @journey[:exit] = station
   @completed = true
-  @journeys << @journey
   end
 
 end
