@@ -23,14 +23,14 @@ class Oystercard
     balance_confirmation
   end
 
-  def touch_in(station)
+  def touch_in(station,zone)
     fail 'Insufficient funds' if balance < MINIMUM_FARE
     @balance -= PENALTY_FARE if started?
     @current_journey = Journey.new(station)
     station
   end
 
-  def touch_out(station)
+  def touch_out(station, zone)
     return @balance -= PENALTY_FARE if !started?
     deduct
     @current_journey.complete(station)
