@@ -1,8 +1,8 @@
 require 'oystercard'
 
-describe Oystercard do
+describe 'Good journey feature' do
 
-subject{described_class.new}
+subject{Oystercard.new}
 
   it 'A user can top up their Oystercard and balance updates' do
     expect{subject.top_up(20)}.to change{subject.balance}.by 20

@@ -2,7 +2,7 @@ require_relative 'journey'
 
 class Oystercard
 
-  attr_reader :limit, :fare, :entry_station, :journeys, :current_journey, :balance
+  attr_reader :limit, :current_journey, :balance, :journeylog
 
   DEFAULT_LIMIT = 90
   DEFAULT_BALANCE = 0
