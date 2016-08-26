@@ -1,5 +1,4 @@
 require_relative 'journey'
-require_relative 'fare_calc'
 
 class Oystercard
 
@@ -9,6 +8,7 @@ class Oystercard
   DEFAULT_LIMIT = 90
   DEFAULT_BALANCE = 0
   PENALTY_FARE = 6
+  MINIMUM_FARE = 1
 
   def initialize(limit = DEFAULT_LIMIT, balance = DEFAULT_BALANCE)
     @limit = limit
@@ -18,21 +18,21 @@ class Oystercard
   end
 
   def top_up(amount)
-    fail 'Balance limit reached' if balance + amount > limit
+    fail 'Balance limit reached' if (balance + amount) >= limit
     @balance += amount
     balance_confirmation
   end
 
   def touch_in(station)
-    fail 'Insufficient funds' if balance < FareCalculator::MINIMUM_FARE   ##############
+    fail 'Insufficient funds' if balance < MINIMUM_FARE
     @balance -= PENALTY_FARE if started?
     @current_journey = Journey.new(station)
     station
   end
 
   def touch_out(station)
-    @balance -= PENALTY_FARE if started?
-    FareCalculator.new.deduct
+    return @balance -= PENALTY_FARE if !started?
+    deduct
     @current_journey.complete(station)
     @current_journey = nil
   end
@@ -48,6 +48,11 @@ class Oystercard
   def started?
     @current_journey != nil
   end
+
+  def deduct
+    @balance -= MINIMUM_FARE
+  end
+
 
   def balance_confirmation
     "Your new balance is #{balance}"

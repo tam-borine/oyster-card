@@ -50,9 +50,8 @@ describe Oystercard do
       end
 
       it 'raises error if limit reached' do
-        oystercard.top_up(90)
         msg = 'Balance limit reached'
-        expect {oystercard.top_up(1)}.to raise_error msg
+        expect {oystercard.top_up(91)}.to raise_error msg
       end
     end
 
@@ -86,11 +85,9 @@ describe Oystercard do
       expect{oystercard.touch_out('station')}.to change {oystercard.balance}.by -described_class::PENALTY_FARE
       end
 
-      before do
+      it 'will forget journey after touch out' do
         oystercard.touch_in("station")
         oystercard.touch_out("station")
-      end
-      it 'will forget journey after touch out' do
         expect(oystercard.current_journey).to eq nil
       end
 
