@@ -9,7 +9,7 @@ MINIMUM_FARE = 1
 
   def initialize(oc = Oystercard)
     @fare = MINIMUM_FARE
-    @balance = oc.new.balance
+    @balance = oc.balance
   end
 
   def deduct

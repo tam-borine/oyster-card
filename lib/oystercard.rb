@@ -3,34 +3,35 @@ require_relative 'fare_calc'
 
 class Oystercard
 
-  attr_reader :limit, :fare, :entry_station, :journeys
-  attr_accessor :current_journey, :balance
+  attr_reader :limit, :fare, :entry_station, :journeys, :current_journey
+  attr_accessor :balance
 
   DEFAULT_LIMIT = 90
   DEFAULT_BALANCE = 0
+  PENALTY_FARE = 6
 
   def initialize(limit = DEFAULT_LIMIT, balance = DEFAULT_BALANCE)
     @limit = limit
     @balance = balance
     @current_journey = nil
-    fail 'Balance cannot be larger than limit' if balance > limit
+    fail 'Balance cannot be larger than limit' if full?
   end
 
   def top_up(amount)
-    fail 'Balance limit reached' if full? || amount > limit
+    fail 'Balance limit reached' if balance + amount > limit
     @balance += amount
     balance_confirmation
   end
 
   def touch_in(station)
     fail 'Insufficient funds' if balance < FareCalculator::MINIMUM_FARE   ##############
-    fail 'must touch out first' if started?
+    @balance -= PENALTY_FARE if started?
     @current_journey = Journey.new(station)
     station
   end
 
   def touch_out(station)
-    fail "must touch in first" if !started?
+    @balance -= PENALTY_FARE if started?
     FareCalculator.new.deduct
     @current_journey.complete(station)
     @current_journey = nil

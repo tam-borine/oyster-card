@@ -73,17 +73,17 @@ describe Oystercard do
         expect(oystercard.current_journey).to_not eq nil
       end
 
-      it 'does not allow touch in if no touch out' do
-        oystercard.touch_in("station1")
-        expect{oystercard.touch_in("station2")}.to raise_error "must touch out first"
+      it 'gives a penalty when touching in without previously touching out' do
+        oystercard.touch_in('station')
+        expect{oystercard.touch_in('station')}.to change {oystercard.balance}.by -described_class::PENALTY_FARE
       end
 
     end
 
     describe '#touch_out' do
 
-      it 'does not allow touch out if not touched in' do
-        expect{oystercard.touch_out("station")}.to raise_error "must touch in first"
+      it 'gives a penalty when touching out withouth previously touching in' do
+      expect{oystercard.touch_out('station')}.to change {oystercard.balance}.by -described_class::PENALTY_FARE
       end
 
       before do

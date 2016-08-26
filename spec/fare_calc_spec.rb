@@ -10,5 +10,8 @@ describe FareCalculator do
     expect { subject.deduct}.to change{subject.balance}.by(-subject.fare)
   end
 
-  it 'deducts the penalty fare on touch in when not touch out'
+  it 'deducts the penalty fare on touch in when not touch out' do
+
+    
+  end
 end
