@@ -2,8 +2,7 @@ require_relative 'journey'
 
 class Oystercard
 
-  attr_reader :limit, :fare, :entry_station, :journeys, :current_journey
-  attr_accessor :balance
+  attr_reader :limit, :fare, :entry_station, :journeys, :current_journey, :balance
 
   DEFAULT_LIMIT = 90
   DEFAULT_BALANCE = 0
@@ -14,6 +13,7 @@ class Oystercard
     @limit = limit
     @balance = balance
     @current_journey = nil
+    @journeylog = JourneyLog.new
     fail 'Balance cannot be larger than limit' if full?
   end
 
@@ -34,6 +34,7 @@ class Oystercard
     return @balance -= PENALTY_FARE if !started?
     deduct
     @current_journey.complete(station)
+    #pass to jlog
     @current_journey = nil
   end
 
