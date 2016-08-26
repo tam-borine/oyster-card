@@ -34,7 +34,7 @@ class Oystercard
     return @balance -= PENALTY_FARE if !started?
     deduct
     @current_journey.complete(station)
-    #pass to jlog
+    @journeylog.log(@current_journey)
     @current_journey = nil
   end
 

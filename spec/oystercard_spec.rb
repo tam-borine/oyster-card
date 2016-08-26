@@ -85,6 +85,7 @@ describe Oystercard do
       expect{oystercard.touch_out('station')}.to change {oystercard.balance}.by -described_class::PENALTY_FARE
       end
 
+
       it 'will forget journey after touch out' do
         oystercard.touch_in("station")
         oystercard.touch_out("station")
