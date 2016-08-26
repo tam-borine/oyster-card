@@ -2,15 +2,15 @@ require 'journey'
 
 describe Journey do
 
-  subject {described_class.new("startstation")}
+  subject {described_class.new("startstation", 1)}
 
 
   it 'initializes with a start' do
-    expect(Journey.new('start').journey[:entry]).to eq 'start'
+    expect(Journey.new('start', 1).journey[:entry]).to eq ['start', 1]
   end
 
   it 'returns true if journey is complete' do
-    subject.complete("station")
+    subject.complete("station", 1)
     expect(subject.completed).to be true
   end
 
@@ -19,12 +19,12 @@ describe Journey do
   end
 
   it 'stores a journey' do
-    subject.complete("stationexit")
-    expect(subject.journey).to eq({entry: "startstation" , exit: "stationexit"})
+    subject.complete("stationexit", 1)
+    expect(subject.journey).to eq({entry: ["startstation", 1] , exit: ["stationexit", 1]})
   end
 
   it 'will remember the entry station' do
-    expect(subject.journey[:entry]).to eq "startstation"
+    expect(subject.journey[:entry]).to eq ["startstation", 1]
   end
 
 end

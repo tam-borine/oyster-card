@@ -4,13 +4,14 @@ class Journey
 
   attr_reader :journey, :completed
 
-  def initialize(start )
-    @journey = {entry: start , exit: nil}
+  def initialize(name, zone)
+    @journey = {entry: [name, zone] , exit: [nil, zone]}
     @completed = false
   end
 
-  def complete(station)
-  @journey[:exit] = station
+  def complete(station, zone)
+  @journey[:exit][0] = station
+  @journey[:exit][1] = zone
   @completed = true
   end
 

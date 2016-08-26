@@ -26,14 +26,13 @@ class Oystercard
   def touch_in(station,zone)
     fail 'Insufficient funds' if balance < MINIMUM_FARE
     @balance -= PENALTY_FARE if started?
-    @current_journey = Journey.new(station)
-    station
+    @current_journey = Journey.new(station, zone)
   end
 
   def touch_out(station, zone)
     return @balance -= PENALTY_FARE if !started?
+    @current_journey.complete(station, zone)
     deduct
-    @current_journey.complete(station)
     @journeylog.log(@current_journey)
     @current_journey = nil
   end
@@ -51,7 +50,8 @@ class Oystercard
   end
 
   def deduct
-    @balance -= MINIMUM_FARE
+    zone_difference = @current_journey.journey[:entry][1] - @current_journey.journey[:exit][1]
+    @balance -= (MINIMUM_FARE + zone_difference.abs)
   end
 
 
